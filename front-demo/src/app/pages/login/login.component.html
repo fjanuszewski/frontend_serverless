@@ -1,20 +1,24 @@
-<div class="container">
+<div class="container m-0 mw-100">
 
-  <div class="row align-items-center justify-content-center" style="height:100vh;">
+  <div class="row align-items-center justify-content-center bg-dark" style="height:100vh;">
     <div>
 
-      <div class="row">
-        <button type="button" id="sendlogin" class="btn btn-primary" (click)="onLoginClick()">
-          Login with AWS
-        </button>
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <button type="button" class="w-100 btn btn-primary" (click)="onLoginClick(false)">
+            Login with AWS
+          </button>
+        </div>
       </div>
 
       <br>
 
-      <div class="row">
-        <button type="button" id="sendlogin" class="btn btn-warning" (click)="onLoginClickOkta()">
-          Login with Okta
-        </button>
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <button type="button" class="w-100 btn btn-warning" (click)="onLoginClick(true)">
+            Login with Okta
+          </button>
+        </div>
       </div>
 
 

@@ -18,44 +18,42 @@
 //     }
 // };
 
-const awsmobile={
+const awsmobile = {
     // "aws_cognito_identity_pool_id": "us-east-1:19db5017-9d8c-XXXXXX",
-    "aws_project_region": "us-east-1",
-    "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_ArcOahSMm",
-    "aws_user_pools_web_client_id": "1am85c4tp8kfhrjsibidn7r4ov",
-    "oauth": {
-        "domain": "fabianjanuszewski.auth.us-east-1.amazoncognito.com",
-        "scope": [
-            "phone",
+    aws_project_region: "us-east-1",
+    aws_cognito_region: "us-east-1",
+    aws_user_pools_id: "us-east-1_ArcOahSMm",
+    aws_user_pools_web_client_id: "1am85c4tp8kfhrjsibidn7r4ov",
+    oauth: {
+        domain: "fabianjanuszewski.auth.us-east-1.amazoncognito.com",
+        scope: [
             "email",
             "openid",
+            "phone",
             "profile",
-            "aws.cognito.signin.user.admin"
+            // "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:4200/login",
-        "redirectSignOut": "http://localhost:4200/home",
-        "responseType": "code"
+        redirectSignIn: "http://localhost:4200/dashboard",
+        redirectSignOut: "http://localhost:4200/",
+        responseType: "code"
     },
-    "federationTarget": "COGNITO_USER_POOLS",
-    "aws_cognito_username_attributes": [
+    federationTarget: "COGNITO_USER_POOLS",
+    aws_cognito_username_attributes: [
         "EMAIL"
     ],
-    "aws_cognito_signup_attributes": [
+    aws_cognito_signup_attributes: [
         "EMAIL"
     ],
-    "aws_cognito_mfa_configuration": "OFF",
-    "aws_cognito_mfa_types": [
+    aws_cognito_mfa_configuration: "OFF",
+    aws_cognito_mfa_types: [
         "SMS"
     ],
-    "aws_cognito_password_protection_settings": {
-        "passwordPolicyMinLength": 8,
-        "passwordPolicyCharacters": []
+    aws_cognito_password_protection_settings: {
+        passwordPolicyMinLength: 8,
+        passwordPolicyCharacters: []
     },
-    "aws_cognito_verification_mechanisms": [
+    aws_cognito_verification_mechanisms: [
         "EMAIL"
     ],
 }
-
-
 export default awsmobile;

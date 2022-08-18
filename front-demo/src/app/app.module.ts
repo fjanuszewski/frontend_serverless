@@ -3,27 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
-
-// import { Amplify } from 'aws-amplify';
-import { LoginComponent } from './pages/login/login.component';
+import { AmplifyAngularModule } from 'aws-amplify-angular';
 import { AuthGuard } from './auth.guard';
 import { HttpInterceptorProviders } from './interceptors/interceptor-provider';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
-// Amplify.configure(environment.cognito);
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, NavBarComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AmplifyAngularModule,
@@ -31,9 +24,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,NgxSpinnerModule
+    BrowserAnimationsModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
-  providers: [AmplifyService, AuthGuard, HttpInterceptorProviders],
+  providers: [AuthGuard, HttpInterceptorProviders],
   bootstrap: [AppComponent],
+
 })
 export class AppModule {}

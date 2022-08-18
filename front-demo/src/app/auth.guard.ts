@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 /**
  * Prevent access to routes if access-token is not present.
- * 
  * @export
  * @class AuthGuard
  * @implements {CanActivate}
@@ -16,7 +15,7 @@ export class AuthGuard implements CanActivate {
   constructor(private _router: Router) { }
 
   canActivate(
-    next: ActivatedRouteSnapshot, 
+    next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     return Auth.currentAuthenticatedUser().then(() => { return true; })
@@ -24,8 +23,6 @@ export class AuthGuard implements CanActivate {
         this._router.navigate(['/login']);
         return false;
       });
-
-    return true;
 
   }
 }

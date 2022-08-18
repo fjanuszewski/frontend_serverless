@@ -10,7 +10,7 @@ export class DashboardService {
   constructor(private restApiService: RestApiService) { }
 
   fetch():Observable<any>{
-    return this.restApiService.get('api/admin/message', null, {observe: 'response'});
+    return this.restApiService.get('api/admin/message', null, { observe: 'response' });
   }
 
 }

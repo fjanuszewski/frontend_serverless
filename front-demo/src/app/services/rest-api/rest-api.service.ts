@@ -22,11 +22,10 @@ export class RestApiService {
     });
   }
 
-  public _addStandardHeaders(header:HttpHeaders){
+  public _addStandardHeaders(header:HttpHeaders) {
     header = header.append('Content-Type','application/json');
     header = header.append('Accept','application/json');
     header = header.append('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
-    
     return header;
   }
 

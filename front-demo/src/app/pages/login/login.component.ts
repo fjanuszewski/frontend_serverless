@@ -1,18 +1,17 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Auth, Hub } from 'aws-amplify';
 import { Router } from '@angular/router';
-import { AmplifyService } from 'aws-amplify-angular'
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private amplifyService: AmplifyService,
     private zone: NgZone,
     private spinner: NgxSpinnerService) {
 
@@ -40,18 +39,17 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { }
 
-  onLoginClick() {
+  /**
+   * Maneja el tipo de inicio de sesión seleccionado, para manipular el
+   * redireccionamiento a la interfaz de cognito.
+   * @param isOkta Flag que indica si utiliza el customProvider OktaWebFlow
+   */
+  onLoginClick(isOkta: boolean) {
     this.spinner.show();
-    Auth.federatedSignIn();
-  }
-
-
-  onLoginClickOkta() {
-    this.spinner.show();
-
-    Auth.federatedSignIn({
-      customProvider: 'OktaWebFlow'
-    });
+    isOkta ? Auth.federatedSignIn({
+          customProvider: 'OktaWebFlow'})
+          :
+          Auth.federatedSignIn();
   }
 
 }
