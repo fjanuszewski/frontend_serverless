@@ -1,0 +1,7 @@
+./node_modules
+*node_modules*
+node_modules
+deploy_local.sh
+packaged-template.yaml
+.aws-sam
+makefile
