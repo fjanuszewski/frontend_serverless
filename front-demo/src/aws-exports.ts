@@ -22,10 +22,10 @@ const awsmobile={
     // "aws_cognito_identity_pool_id": "us-east-1:19db5017-9d8c-XXXXXX",
     "aws_project_region": "us-east-1",
     "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_5Cor8hUlk",
-    "aws_user_pools_web_client_id": "2igunj12qho73itvi2r99s6mg7",
+    "aws_user_pools_id": "us-east-1_ArcOahSMm",
+    "aws_user_pools_web_client_id": "1am85c4tp8kfhrjsibidn7r4ov",
     "oauth": {
-        "domain": "fabianjanuszewski2.auth.us-east-1.amazoncognito.com",
+        "domain": "fabianjanuszewski.auth.us-east-1.amazoncognito.com",
         "scope": [
             "phone",
             "email",

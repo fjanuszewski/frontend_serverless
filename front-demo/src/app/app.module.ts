@@ -27,7 +27,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   imports: [
     BrowserModule,
     AmplifyAngularModule,
-    // AmplifyAuthenticatorModule,
+    AmplifyAuthenticatorModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
