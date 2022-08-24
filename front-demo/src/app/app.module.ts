@@ -22,7 +22,7 @@ import { SharedModule } from './shared/shared.module';
     AmplifyAngularModule,
     AmplifyAuthenticatorModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule,SharedModule,
     HttpClientModule,
     BrowserAnimationsModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
