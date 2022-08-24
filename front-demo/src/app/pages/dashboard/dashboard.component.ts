@@ -17,9 +17,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.spinner.show();
+    // this.spinner.show();
 
-    this.fetchMessage()
+    // this.fetchMessage()
 
   }
 
