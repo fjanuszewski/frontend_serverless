@@ -9,8 +9,115 @@ Parameters:
     MaxLength: 63
     AllowedPattern: ^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?$
     Description: Enter a string. Must be alpha numeric 3-63 in length.
+  CertArn:
+    Type: String
+  Domain:
+    Type: String
+  SubDomain:
+    Type: String
+
 
 Resources:
+
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join: [".", [Ref: SubDomain, Ref: Domain]]
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: 
+        Ref: 'SiteBucket'
+      PolicyDocument:
+        Statement:
+          - Sid: PublicForCloudFront
+            Effect: Allow
+            Principal:
+              CanonicalUser:
+                Fn::GetAtt: [ CloudFrontOriginAccessIdentity , S3CanonicalUserId ]
+            Action: s3:GetObject
+            Resource:
+              Fn::Sub: "${SiteBucket.Arn}/*"
+
+  CloudFrontDistribution: 
+    DependsOn:
+    - SiteBucket
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        CustomErrorResponses:
+          - ErrorCode: 403 # not found
+            ResponseCode: 404
+            ResponsePagePath: '/index.html'
+        Origins:
+          - DomainName: 
+              Fn::GetAtt: SiteBucket.DomainName
+            Id: s3origin
+            S3OriginConfig:
+              OriginAccessIdentity:
+                Fn::Sub: "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        PriceClass: 'PriceClass_All'
+        Enabled: "true"
+        Comment: 
+          Fn::Join: [".", [Ref: AWS::StackName, "Distribution"]]
+        DefaultRootObject: '/index.html'
+        HttpVersion: http2        
+        Aliases:
+          - Fn::Join: [".", [Ref: SubDomain, Ref: Domain]]
+        ViewerCertificate:
+          AcmCertificateArn: 
+            Ref: CertArn
+          SslSupportMethod: sni-only
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          Compress: true
+          DefaultTTL: 3600 # in seconds
+          ForwardedValues:
+            Cookies:
+              Forward: none
+            QueryString: false
+          MaxTTL: 86400 # in seconds
+          MinTTL: 60 # in seconds
+          TargetOriginId: s3origin
+          ViewerProtocolPolicy: 'redirect-to-https'
+
+  CloudFrontOriginAccessIdentity:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 
+          Fn::Sub: "Identity to access site for ${AWS::StackName}"
+
+  SiteHost:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        #Required in SUB for string format
+        DNSName: 
+          Fn::Sub: ${CloudFrontDistribution.DomainName}
+        #This value is required for CloudFormation https://docs.aws.amazon.com/es_es/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
+        HostedZoneId: Z2FDTNDATAQYW2
+      #The dot in the end if required for hosted zone
+      HostedZoneName: 
+        Fn::Sub: "${Domain}." 
+      Comment:
+        Fn::Sub: "Domain for ${AWS::StackName}"
+      Name:
+        Fn::Join: [".", [Ref: SubDomain, Ref: Domain]]
+      Type: A
+
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -28,6 +135,10 @@ Resources:
           AttributeDataType: String
           Mutable: true
           Required: true
+        - Name: avatar
+          AttributeDataType: String
+          Mutable: false
+          Required: false
 
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
@@ -35,7 +146,10 @@ Resources:
       UserPoolId: !Ref UserPool
       AllowedOAuthFlowsUserPoolClient: true
       CallbackURLs:
-        - http://localhost:3000
+        - http://localhost:4200/dashboard
+        - http://localhost:4200/
+        - Fn::Sub: https://${SubDomain}.${Domain}/dashboard
+        - Fn::Sub: https://${SubDomain}.${Domain}/
       AllowedOAuthFlows:
         - code
         - implicit
@@ -58,9 +172,25 @@ Outputs:
   CognitoUserPoolID:
     Value: !Ref UserPool
     Description: The UserPool ID
+    Export:
+      Name: 
+        Fn::Join: ["-", [Ref: AWS::StackName, "CognitoUserPoolID"]]
   CognitoAppClientID:
     Value: !Ref UserPoolClient
     Description: The app client
+    Export:
+      Name: 
+        Fn::Join: ["-", [Ref: AWS::StackName, "CognitoAppClientID"]]
   HostedUIURL:
     Value: !Sub https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${UserPoolClient}&response_type=code&scope=email+openid+phone+profile&redirect_uri=http://localhost:3000
     Description: The hosted UI URL
+    Export:
+      Name: 
+        Fn::Join: ["-", [Ref: AWS::StackName, "HostedUIURL"]]
+  CloudFrontDistributionOutput:
+    Description: CloudFront Distribution
+    Value: 
+      Ref: CloudFrontDistribution
+    Export:
+      Name: 
+        Fn::Join: ["-", [Ref: AWS::StackName, "PortalDistribution"]]

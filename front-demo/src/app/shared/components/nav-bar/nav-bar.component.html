@@ -1,5 +1,0 @@
-<nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand">{{username}}</a>
-  <button *ngIf="this.isAuthenticated" type="button" class="btn btn-danger my-2 my-sm-0" (click)="onLogoutClick($event)">Logout</button>
-  <button *ngIf="!this.isAuthenticated" type="button" class="btn btn-danger my-2 my-sm-0" (click)="onLogoutClick($event)">Login</button>
-</nav>
