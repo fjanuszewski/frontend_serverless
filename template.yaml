@@ -150,6 +150,8 @@ Resources:
         - http://localhost:4200/
         - Fn::Sub: https://${SubDomain}.${Domain}/dashboard
         - Fn::Sub: https://${SubDomain}.${Domain}/
+      LogoutURLs:
+        - http://localhost:4200/
       AllowedOAuthFlows:
         - code
         - implicit
