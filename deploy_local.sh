@@ -9,7 +9,7 @@ BUCKET=temporaly-bucket-deploysam #BUCKET IS REQUIRED FOR SAM PACKAGE
 
 DOMAIN="fabianjanuszewski.com"
 SUBDOMAIN="serverless-demo"
-CERTARN=arn:aws:acm:us-east-1:458519205575:certificate/fc2fb0f1-545a-4fbd-8189-8f97c6c84793
+CERTARN=arn:aws:acm:us-east-1:458519205575:certificate/4375bd89-943c-4d30-8cd2-edf072b64e31
 
 STACK=serverless-frontend-$ENV #NAME OF STACK, IS IMPORTANT FOR THE NAME OF ALL OBJECTS IN TEMPLATE
 PROJECT=servlerless-example #PROJECT NAME FOR THE TAGS
@@ -43,7 +43,7 @@ CLOUDFRONT_DISTRIBUTION=`aws cloudformation describe-stacks --profile $AWS_PROFI
 echo "${YELLOW} Install frontend"
 echo " ================================================= ${NC}"
 npm install
-ng build
+npm run build
 
 echo "${YELLOW} Push to S3 dist"
 echo " ================================================= ${NC}"

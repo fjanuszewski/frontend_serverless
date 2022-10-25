@@ -2,12 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: CognitoAPIGWAngular
 Parameters:
-  CognitoDomain:
-    Type: String
-    MinLength: 3
-    MaxLength: 63
-    AllowedPattern: ^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?$
-    Description: Enter a string. Must be alpha numeric 3-63 in length.
   CertArn:
     Type: String
   Domain:
@@ -130,95 +124,17 @@ Resources:
       Type: A
     Metadata:
       SamResourceId: SiteHost
-  UserPool:
-    Type: AWS::Cognito::UserPool
+  EmployeeTable:
+    Type: AWS::Serverless::SimpleTable
     Properties:
-      UsernameConfiguration:
-        CaseSensitive: false
-      AutoVerifiedAttributes:
-      - email
-      UserPoolName:
-        Fn::Sub: ${CognitoDomain}-user-pool
-      Schema:
-      - Name: email
-        AttributeDataType: String
-        Mutable: false
-        Required: true
-      - Name: name
-        AttributeDataType: String
-        Mutable: true
-        Required: true
-      - Name: avatar
-        AttributeDataType: String
-        Mutable: false
-        Required: false
+      TableName:
+        Fn::Sub: ${AWS::StackName}-employees
+      PrimaryKey:
+        Name: email
+        Type: String
     Metadata:
-      SamResourceId: UserPool
-  UserPoolClient:
-    Type: AWS::Cognito::UserPoolClient
-    Properties:
-      UserPoolId:
-        Ref: UserPool
-      AllowedOAuthFlowsUserPoolClient: true
-      CallbackURLs:
-      - http://localhost:4200/dashboard
-      - http://localhost:4200/
-      - Fn::Sub: https://${SubDomain}.${Domain}/dashboard
-      - Fn::Sub: https://${SubDomain}.${Domain}/
-      LogoutURLs:
-      - http://localhost:4200/
-      AllowedOAuthFlows:
-      - code
-      - implicit
-      AllowedOAuthScopes:
-      - phone
-      - email
-      - openid
-      - profile
-      SupportedIdentityProviders:
-      - COGNITO
-    Metadata:
-      SamResourceId: UserPoolClient
-  UserPoolDomain:
-    Type: AWS::Cognito::UserPoolDomain
-    Properties:
-      Domain:
-        Ref: CognitoDomain
-      UserPoolId:
-        Ref: UserPool
-    Metadata:
-      SamResourceId: UserPoolDomain
+      SamResourceId: EmployeeTable
 Outputs:
-  CognitoUserPoolID:
-    Value:
-      Ref: UserPool
-    Description: The UserPool ID
-    Export:
-      Name:
-        Fn::Join:
-        - '-'
-        - - Ref: AWS::StackName
-          - CognitoUserPoolID
-  CognitoAppClientID:
-    Value:
-      Ref: UserPoolClient
-    Description: The app client
-    Export:
-      Name:
-        Fn::Join:
-        - '-'
-        - - Ref: AWS::StackName
-          - CognitoAppClientID
-  HostedUIURL:
-    Value:
-      Fn::Sub: https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/login?client_id=${UserPoolClient}&response_type=code&scope=email+openid+phone+profile&redirect_uri=http://localhost:3000
-    Description: The hosted UI URL
-    Export:
-      Name:
-        Fn::Join:
-        - '-'
-        - - Ref: AWS::StackName
-          - HostedUIURL
   CloudFrontDistributionOutput:
     Description: CloudFront Distribution
     Value:

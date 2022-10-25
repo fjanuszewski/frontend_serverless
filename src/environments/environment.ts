@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  resourceServerURL :"https://<resource-server>.eu-west-1.elb.amazonaws.com",
+  resourceServerURL :"https://qt615z47r1.execute-api.us-east-1.amazonaws.com/develop",
 }
 
 /*

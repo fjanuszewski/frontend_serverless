@@ -2,10 +2,10 @@ const awsmobile = {
     // "aws_cognito_identity_pool_id": "us-east-1:19db5017-9d8c-XXXXXX",
     aws_project_region: "us-east-1",
     aws_cognito_region: "us-east-1",
-    aws_user_pools_id: "us-east-1_DijBJ4LAl",
-    aws_user_pools_web_client_id: "6g3s0rug3q0rll9pt805jb6qte",
+    aws_user_pools_id: "us-east-1_6VmZiClMH",
+    aws_user_pools_web_client_id: "eof6qr3kg9rg2n2ku9m8mp1dj",
     oauth: {
-        domain: "fabianjanuszewski.auth.us-east-1.amazoncognito.com",
+        domain: "serverless-bakend-develop.auth.us-east-1.amazoncognito.com",
         scope: [
             "email",
             "openid",

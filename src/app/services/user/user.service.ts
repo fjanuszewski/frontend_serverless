@@ -21,6 +21,7 @@ export class UserService {
   getAuthUserData() {
     return Auth.currentAuthenticatedUser()
       .then((user) => {
+        console.log(user)
         this.isAuthenticated = true;
         const currentUser = new UserClass(
           user.username,
@@ -33,7 +34,6 @@ export class UserService {
         return currentUser
       })
   }
-
   getIsAuthenticated(): boolean {
     return this.isAuthenticated;
   }

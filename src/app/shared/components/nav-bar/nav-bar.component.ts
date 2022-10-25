@@ -30,4 +30,5 @@ export class NavBarComponent implements OnInit {
         })
       : Auth.federatedSignIn();
   }
+
 }

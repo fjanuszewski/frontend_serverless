@@ -13,7 +13,7 @@ export class RestApiService {
   /**
    * Cabeceras HTTP
    */
-   public headers: HttpHeaders;
+  public headers: HttpHeaders;
 
   constructor(public http: HttpClient) {
     this.token ="";
